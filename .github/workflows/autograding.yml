@@ -1,0 +1,45 @@
+name: Autograding
+
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Compile
+        run: make
+
+      - name: Test reverse
+        run: |
+          output=$(./reverse Bonjour)
+          if [ "$output" != "ruojnoB" ]; then
+            echo "Reverse failed"
+            exit 1
+          fi
+
+      - name: Test count
+        run: |
+          output=$(./count "Hello")
+          if [ "$output" != "2" ]; then
+            echo "Count failed"
+            exit 1
+          fi
+
+      - name: Test palindrome YES
+        run: |
+          output=$(./palindrome radar)
+          if [ "$output" != "YES" ]; then
+            echo "Palindrome failed"
+            exit 1
+          fi
+
+      - name: Test palindrome NO
+        run: |
+          output=$(./palindrome hello)
+          if [ "$output" != "NO" ]; then
+            echo "Palindrome failed"
+            exit 1
+          fi
